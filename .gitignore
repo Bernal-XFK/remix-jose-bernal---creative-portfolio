@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+# No subir archivos de entorno (seguridad)
+# Estos archivos contienen tus llaves secretas. 
+# Debes configurar estas variables manualmente en el Dashboard de Vercel.
+.env*
+!.env.example
