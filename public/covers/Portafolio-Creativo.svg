@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Portafolio Creativo — cover by Bernal-XFK">
+  <title>Portafolio Creativo — Bernal-XFK</title>
+  <defs>
+    <linearGradient id="bg" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a00e0"/>
+      <stop offset="0.45" stop-color="#170a3a"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00ffcc"/>
+      <stop offset="1" stop-color="#f27d26"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#00ffcc" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#00ffcc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f27d26" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#f27d26" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1020" cy="110" r="260" fill="url(#glowA)"/>
+  <circle cx="180" cy="600" r="300" fill="url(#glowB)"/>
+  <circle cx="950" cy="315" r="168" fill="#050505" fill-opacity="0.55" stroke="#00ffcc" stroke-opacity="0.5" stroke-width="2"/>
+  <circle cx="950" cy="315" r="132" fill="none" stroke="#f27d26" stroke-opacity="0.65" stroke-width="2" stroke-dasharray="6 10"/>
+  <circle cx="836" cy="381" r="8" fill="#00ffcc"/>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <g fill="#0a0a14" fill-opacity="0.9" stroke-width="5">
+      <rect x="876" y="248" width="68" height="56" rx="8" stroke="#00ffcc"/>
+      <rect x="956" y="248" width="68" height="56" rx="8" stroke="#f27d26"/>
+      <rect x="876" y="316" width="68" height="56" rx="8" stroke="#f27d26"/>
+      <rect x="956" y="316" width="68" height="56" rx="8" stroke="#00ffcc"/>
+    </g>
+    <g fill="none" stroke-width="4">
+      <circle cx="899" cy="267" r="6" stroke="#f27d26"/>
+      <path d="M884 296l14-14 10 8 12-10 16 16z" fill="#00ffcc" fill-opacity="0.25" stroke="#00ffcc"/>
+      <path d="M972 276l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#f27d26" stroke="none"/>
+      <path d="M888 348h44M888 358h30" stroke="#f5f5f5" stroke-opacity="0.6"/>
+      <path d="M972 330l12 12 16-20" stroke="#00ffcc"/>
+    </g>
+  </g>
+  <g font-family="Space Grotesk, Inter, system-ui, sans-serif">
+    <rect x="80" y="84" width="228" height="44" rx="22" fill="none" stroke="#00ffcc" stroke-width="2" stroke-opacity="0.8"/>
+    <circle cx="108" cy="106" r="6" fill="#00ffcc"/>
+    <text x="126" y="114" font-size="19" letter-spacing="3" fill="#f5f5f5">BERNAL-XFK</text>
+    <text x="80" y="300" font-size="80" font-weight="700" fill="#f5f5f5">Portafolio</text>
+    <text x="80" y="384" font-size="80" font-weight="700" fill="#f5f5f5">Creativo</text>
+    <text x="82" y="436" font-family="JetBrains Mono, monospace" font-size="26" letter-spacing="2" fill="#00ffcc">GALERÍA • DISEÑO • UI</text>
+    <text x="82" y="474" font-size="22" fill="#f5f5f5" fill-opacity="0.65">Galería visual • Layout • Identidad</text>
+    <line x1="80" y1="548" x2="1120" y2="548" stroke="url(#line)" stroke-width="2" stroke-opacity="0.5"/>
+    <text x="80" y="592" font-family="JetBrains Mono, monospace" font-size="20" letter-spacing="2" fill="#f5f5f5" fill-opacity="0.8">JOSE BERNAL — CREATIVE DEVELOPER</text>
+    <text x="1120" y="592" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="18" fill="#f5f5f5" fill-opacity="0.5">Portafolio-Creativo</text>
+  </g>
+</svg>

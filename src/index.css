@@ -10,6 +10,21 @@
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  --animate-spin-slow: spin-slow 15s linear infinite;
+  --animate-spin-slow-reverse: spin-slow-reverse 20s linear infinite;
+
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-slow-reverse {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
 }
 
 @layer base {
@@ -26,7 +41,16 @@
     color: var(--foreground);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
-    cursor: none; /* Hide default cursor for custom cursor */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (pointer: fine) {
+    body {
+      cursor: none; /* Hide default cursor for custom cursor (fine pointers only) */
+    }
   }
 
   /* Custom Scrollbar */
@@ -64,5 +88,164 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Galaxia Skills — CSS puro (no depende de framer-motion/rAF ni de JS).
+   Solo transform/opacity — 60fps, sin layout shift.
+   Diagnóstico del "core quieto":
+   - Las clases SÍ tenían `animation`, no era clase sin animación.
+   - El kill global de reduced-motion (`* { duration:0.01ms; count:1 }`)
+     congelaba todo; el bloque de resurrección posterior lo revive por
+     especificidad (.clase > *) + orden en cascada.
+   - `perspective`/`overflow-hidden` de la sección NO congelan: el giro es
+     rotate() 2D del anillo hijo (visible aun si el 3D se aplana).
+   - `transform-gpu` de Tailwind componía con el `transform` animado y el
+     centrado absolute-sin-inset era frágil → se aísla: sin transform-gpu
+     en elementos animados y centrado con `inset-0 m-auto` (sin transform).
+   Fix robusto: longhands (el var(--orbit-duration) va en
+   animation-duration, no en el shorthand que algunos minifiers rompen),
+   transform-origin explícito y pulse más visible (1 → 1.1). */
+@keyframes galaxy-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes galaxy-orbit-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes galaxy-core-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes galaxy-halo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.85;
+  }
+}
+
+.galaxy-orbit {
+  animation-name: galaxy-orbit;
+  animation-duration: var(--orbit-duration, 22s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.galaxy-orbit-reverse {
+  animation-name: galaxy-orbit-reverse;
+  animation-duration: var(--orbit-duration, 22s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.galaxy-core-pulse {
+  animation-name: galaxy-core-pulse;
+  animation-duration: 2.8s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.galaxy-halo-pulse {
+  animation-name: galaxy-halo-pulse;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.galaxy-spin-slow {
+  animation-name: galaxy-orbit;
+  animation-duration: 30s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* Motion system: transform/opacity only (60fps, sin layout shift).
+   Los reveals one-shot sí se congelan con reduced-motion, pero la galaxia
+   decorativa (aria-hidden) NO se mata: solo se ralentiza para seguir visible
+   sin riesgo vestibular. Este override va DESPUÉS del kill global para ganar
+   por cascada (misma especificidad !important → gana el último). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-spin-slow,
+  .animate-spin-slow-reverse {
+    animation: none !important;
+  }
+}
+
+/* Ralentiza (no congela) la galaxia decorativa bajo reduced-motion.
+   Debe ir después del bloque anterior para resucitar estas clases.
+   Longhands explícitos + !important: ganan al kill global por
+   especificidad (.galaxy-* > *) y por orden. Solo transform/opacity. */
+@media (prefers-reduced-motion: reduce) {
+  .galaxy-orbit,
+  .galaxy-orbit-reverse {
+    animation-name: galaxy-orbit !important;
+    animation-duration: 60s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: linear !important;
+  }
+  .galaxy-orbit-reverse {
+    animation-name: galaxy-orbit-reverse !important;
+  }
+  .galaxy-spin-slow {
+    animation-name: galaxy-orbit !important;
+    animation-duration: 90s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: linear !important;
+  }
+  .galaxy-core-pulse {
+    animation-name: galaxy-core-pulse !important;
+    animation-duration: 6s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: ease-in-out !important;
+  }
+  .galaxy-halo-pulse {
+    animation-name: galaxy-halo-pulse !important;
+    animation-duration: 6s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: ease-in-out !important;
   }
 }

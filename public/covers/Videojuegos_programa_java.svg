@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Videojuegos en Java — cover by Bernal-XFK">
+  <title>Videojuegos en Java — Bernal-XFK</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a00e0"/>
+      <stop offset="0.45" stop-color="#170a3a"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f27d26"/>
+      <stop offset="1" stop-color="#00ffcc"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f27d26" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#f27d26" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#00ffcc" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#00ffcc" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1020" cy="110" r="260" fill="url(#glowA)"/>
+  <circle cx="180" cy="600" r="300" fill="url(#glowB)"/>
+  <circle cx="950" cy="315" r="168" fill="#050505" fill-opacity="0.55" stroke="#00ffcc" stroke-opacity="0.5" stroke-width="2"/>
+  <circle cx="950" cy="315" r="132" fill="none" stroke="#f27d26" stroke-opacity="0.65" stroke-width="2" stroke-dasharray="6 10"/>
+  <circle cx="1064" cy="249" r="8" fill="#f27d26"/>
+  <g stroke-linejoin="round">
+    <g shape-rendering="crispEdges">
+      <rect x="892" y="242" width="18" height="18" fill="#00ffcc"/>
+      <rect x="910" y="242" width="18" height="18" fill="#00ffcc" opacity="0.35"/>
+      <rect x="1002" y="242" width="18" height="18" fill="#f27d26"/>
+      <rect x="884" y="378" width="14" height="14" fill="#f27d26"/>
+      <rect x="898" y="378" width="14" height="14" fill="#00ffcc"/>
+      <rect x="912" y="378" width="14" height="14" fill="#f27d26"/>
+      <rect x="926" y="378" width="14" height="14" fill="#00ffcc"/>
+      <rect x="940" y="378" width="14" height="14" fill="#f27d26"/>
+      <rect x="954" y="378" width="14" height="14" fill="#00ffcc"/>
+      <rect x="968" y="378" width="14" height="14" fill="#f27d26"/>
+      <rect x="982" y="378" width="14" height="14" fill="#00ffcc"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="906" y="272" width="88" height="72" rx="10" fill="#0a0a14" stroke="#00ffcc" stroke-width="5"/>
+      <circle cx="928" cy="294" r="7" fill="#f27d26" stroke="none"/>
+      <rect x="946" y="288" width="30" height="12" rx="2" fill="#00ffcc" stroke="none"/>
+      <rect x="920" y="312" width="48" height="10" rx="2" fill="#f5f5f5" stroke="none" opacity="0.7"/>
+      <line x1="950" y1="344" x2="950" y2="368" stroke="#f5f5f5" stroke-width="8"/>
+      <circle cx="950" cy="336" r="12" fill="#f27d26" stroke="#050505" stroke-width="4"/>
+      <circle cx="1006" cy="330" r="10" fill="none" stroke="#f27d26" stroke-width="5"/>
+      <circle cx="1006" cy="356" r="10" fill="none" stroke="#00ffcc" stroke-width="5"/>
+      <line x1="898" y1="362" x2="1022" y2="362" stroke="#f27d26" stroke-width="4"/>
+    </g>
+  </g>
+  <g font-family="Space Grotesk, Inter, system-ui, sans-serif">
+    <rect x="80" y="84" width="228" height="44" rx="22" fill="none" stroke="#00ffcc" stroke-width="2" stroke-opacity="0.8"/>
+    <circle cx="108" cy="106" r="6" fill="#00ffcc"/>
+    <text x="126" y="114" font-size="19" letter-spacing="3" fill="#f5f5f5">BERNAL-XFK</text>
+    <text x="80" y="290" font-size="78" font-weight="700" fill="#f5f5f5">Videojuegos</text>
+    <text x="80" y="372" font-size="78" font-weight="700" fill="#f5f5f5">en Java</text>
+    <text x="82" y="426" font-family="JetBrains Mono, monospace" font-size="26" letter-spacing="2" fill="#00ffcc">ARCADE • PIXEL • JOYSTICK</text>
+    <text x="82" y="464" font-size="22" fill="#f5f5f5" fill-opacity="0.65">Retro arcade • Lógica • Sprites</text>
+    <line x1="80" y1="548" x2="1120" y2="548" stroke="url(#line)" stroke-width="2" stroke-opacity="0.5"/>
+    <text x="80" y="592" font-family="JetBrains Mono, monospace" font-size="20" letter-spacing="2" fill="#f5f5f5" fill-opacity="0.8">JOSE BERNAL — CREATIVE DEVELOPER</text>
+    <text x="1120" y="592" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="16" fill="#f5f5f5" fill-opacity="0.5">Videojuegos_programa_java</text>
+  </g>
+</svg>

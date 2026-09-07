@@ -2,19 +2,20 @@
 <img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
 </div>
 
-# Run and deploy your AI Studio app
+# Creative Portfolio — Jose Bernal
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/c0d2dc3b-99f0-4912-8bfd-b98a611efd6c
+Portafolio SPA (React + Vite + Tailwind v4 + motion) con API de proyectos vía GitHub (`/api/projects`, `server.ts`).
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. (Opcional) Copia `.env.example` a `.env.local` y define `GITHUB_TOKEN` con un Personal Access Token
+   para evitar el rate limit de la API pública de GitHub. Sin token la app funciona, pero con muchas
+   recargas GitHub puede devolver 403. Crea el token en https://github.com/settings/tokens.
 3. Run the app:
    `npm run dev`
+4. Build:
+   `npm run build`

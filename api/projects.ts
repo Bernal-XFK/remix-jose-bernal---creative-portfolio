@@ -11,6 +11,27 @@ const EXCLUDED_REPOS = [
   'Portfolio'   // Puedes excluir el código fuente de tu portafolio si lo deseas
 ];
 
+// Covers locales generados (public/covers/<repo>.svg, 1200x630, paleta del portfolio).
+// Tienen prioridad sobre el cover.png remoto; el opengraph de GitHub queda como fallback.
+const CUSTOM_IMAGES: Record<string, string> = {
+  'remix-jose-bernal---creative-portfolio': '/covers/remix-jose-bernal---creative-portfolio.svg',
+  'jose-bernal-portfolio': '/covers/jose-bernal-portfolio.svg',
+  'Experiencia-Interactiva-AR-Pokemon': '/covers/Experiencia-Interactiva-AR-Pokemon.svg',
+  'Portafolio-Creativo': '/covers/Portafolio-Creativo.svg',
+  'MACTDEMAT': '/covers/MACTDEMAT.svg',
+  'WaveMood': '/covers/WaveMood.svg',
+  'Fase4Sergio_Bola-os': '/covers/Fase4Sergio_Bola-os.svg',
+  'Fase3Sergio_Bola-os': '/covers/Fase3Sergio_Bola-os.svg',
+  'Fase2Sergio_Bola-os': '/covers/Fase2Sergio_Bola-os.svg',
+  'OS': '/covers/OS.svg',
+  'applet_Conversor_de_tiempo': '/covers/applet_Conversor_de_tiempo.svg',
+  'applet_Facturacion_Sena': '/covers/applet_Facturacion_Sena.svg',
+  'Videojuegos_programa_java': '/covers/Videojuegos_programa_java.svg',
+  'Maraton-Java-Code-Gym': '/covers/Maraton-Java-Code-Gym.svg',
+  'pets': '/covers/pets.svg',
+  'advanced-programming': '/covers/advanced-programming.svg',
+};
+
 function formatTitle(name: string) {
   // Convierte "mi-proyecto-web" a "Mi Proyecto Web"
   return name.split(/[-_]/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -75,10 +96,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const title = formatTitle(repo.name);
         const description = repo.description || generateFallbackDescription(repo.name, repo.language, repo.topics);
         
-        // Estrategia de imagen: Buscamos cover.png en la rama principal. 
+        // Estrategia de imagen: cover local > cover.png remoto > opengraph (fallback en frontend).
         // Si falla en el frontend, usaremos la imagen generada por GitHub (OpenGraph)
         const defaultBranch = repo.default_branch || 'main';
-        const image = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repo.name}/${defaultBranch}/cover.png`;
+        const remoteCover = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repo.name}/${defaultBranch}/cover.png`;
+        const image = CUSTOM_IMAGES[repo.name] || remoteCover;
         const fallbackImage = `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${repo.name}`;
         
         const tech = [];

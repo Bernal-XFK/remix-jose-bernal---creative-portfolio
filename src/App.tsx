@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
+import { ScrollProgress } from './components/motion-shared';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import CV from './components/CV';
 import Contact from './components/Contact';
+import Socials from './components/Socials';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,7 @@ export default function App() {
   return (
     <div className="bg-background min-h-screen text-foreground selection:bg-primary selection:text-black">
       <CustomCursor />
+      <ScrollProgress />
       
       <AnimatePresence>
         {loading && <Loader onComplete={() => setLoading(false)} />}
@@ -42,9 +45,12 @@ export default function App() {
           <CV />
           <Contact />
           
-          <footer className="py-8 text-center border-t border-white/5 font-mono text-xs text-white/30 uppercase tracking-widest">
-            <p>© {new Date().getFullYear()} Jose Alejandro Bernal Figueroa. All rights reserved.</p>
-            <p className="mt-2">Designed with <span className="text-primary">♥</span> and Code</p>
+          <footer className="py-8 border-t border-white/5 font-mono text-xs text-white/30 uppercase tracking-widest">
+            <div className="flex flex-col items-center gap-5 px-6 text-center">
+              <Socials className="justify-center" />
+              <p>© {new Date().getFullYear()} Jose Alejandro Bernal Figueroa. All rights reserved.</p>
+              <p className="mt-0">Designed with <span className="text-primary">♥</span> and Code</p>
+            </div>
           </footer>
         </motion.main>
       )}
