@@ -48,7 +48,23 @@ function buildMailto(to: string, name: string, email: string, message: string): 
   return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-function getStatus() {
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === "string" && error.length > 0) return error;
+  return "Error desconocido";
+}
+
+function getStatus(): {
+  ok: boolean;
+  mode: string;
+  smtpReady: boolean;
+  hasHost: boolean;
+  hasUser: boolean;
+  hasPass: boolean;
+  hasContactTo: boolean;
+  hasFrom: boolean;
+  port: number;
+} {
   // Diagnóstico sin exponer secretos: solo booleanos + puerto (no secreto).
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
   const hasHost = Boolean(SMTP_HOST);
@@ -69,7 +85,7 @@ function getStatus() {
   };
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse): Promise<VercelResponse> {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -137,12 +153,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         text: `Nombre: ${name}\nEmail: ${email}\nIP: ${ip}\n\n${message}`,
       });
       return res.status(200).json({ ok: true, delivered: "smtp" });
-    } catch (mailErr: any) {
-      console.error("[contact:smtp-error]", mailErr?.message || mailErr);
+    } catch (mailError: unknown) {
+      console.error("[contact:smtp-error]", getErrorMessage(mailError));
       return res.status(502).json({ ok: false, error: "No se pudo enviar el mensaje. Inténtalo por email directo.", mailto });
     }
-  } catch (err: any) {
-    console.error("[contact:error]", err?.message || err);
+  } catch (handlerError: unknown) {
+    console.error("[contact:error]", getErrorMessage(handlerError));
     return res.status(500).json({ ok: false, error: "Error interno al procesar el mensaje." });
   }
 }

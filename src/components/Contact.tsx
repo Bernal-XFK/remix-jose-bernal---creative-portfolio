@@ -6,6 +6,14 @@ import { SplitChars, Reveal, Stagger, StaggerItem } from './motion-shared';
 
 type Delivered = 'smtp' | 'log' | null;
 
+interface ContactApiResponse {
+  ok?: boolean;
+  error?: string;
+  details?: Record<string, string>;
+  delivered?: Delivered;
+  mailto?: string;
+}
+
 export default function Contact() {
   const ref = useRef(null);
   const reduce = useReducedMotion() === true;
@@ -42,9 +50,9 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      let json: any = null;
+      let json: ContactApiResponse | null = null;
       try {
-        json = await res.json();
+        json = await res.json() as ContactApiResponse;
       } catch {
         json = null;
       }

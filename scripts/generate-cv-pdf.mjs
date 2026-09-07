@@ -1,5 +1,7 @@
-// Genera public/cv.pdf con pdfkit (xref/Length/escaping/WinAnsi correctos).
+// Genera public/cv.pdf — CV PROFESIONAL PÚBLICO (1-2 páginas, pdfkit).
 // Uso: node scripts/generate-cv-pdf.mjs
+// SEGURIDAD: solo datos públicos. NO incluir cédula, dirección exacta,
+// datos familiares, EPS, banco ni firma.
 import PDFDocument from 'pdfkit';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -35,14 +37,21 @@ function bullet(doc, label, body) {
   doc.moveDown(0.15);
 }
 
+function eduItem(doc, title, meta, desc) {
+  doc.font('Helvetica-Bold').fontSize(9.4).fillColor(INK).text(title, { lineGap: 1 });
+  doc.font('Helvetica-Oblique').fontSize(8.8).fillColor(LIGHT_MUTED).text(meta, { lineGap: 1 });
+  if (desc) doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text(desc, { lineGap: 1 });
+  doc.moveDown(0.25);
+}
+
 const doc = new PDFDocument({
   size: 'A4',
   margins: { top: 0, bottom: 48, left: 48, right: 48 },
   info: {
-    Title: 'Jose Bernal — CV | Ingenieria de Sistemas (CESMAG)',
+    Title: 'Jose Alejandro Bernal Figueroa — CV | Ing. de Sistemas 10mo semestre + Big Data',
     Author: 'Jose Alejandro Bernal Figueroa',
-    Subject: 'Hoja de vida — Frontend / Backend / Data',
-    Keywords: 'CV, Jose Bernal, Ingenieria de Sistemas, CESMAG, React, TypeScript, Java, Python',
+    Subject: 'Hoja de vida pública — Frontend / Backend / Análisis de datos',
+    Keywords: 'CV, Jose Bernal, Ingenieria de Sistemas, CESMAG, Big Data, React, TypeScript, Python',
     Creator: 'Creative Portfolio — scripts/generate-cv-pdf.mjs (pdfkit)',
     Producer: 'pdfkit',
   },
@@ -59,20 +68,19 @@ doc.rect(0, 0, W, 168).fill(NAVY);
 doc.restore();
 
 doc.fillColor('#ffffff').font('Helvetica-Bold').fontSize(21).text('Jose Alejandro Bernal Figueroa', 48, 30, { align: 'center', width: W - 96 });
-doc.fillColor('#dbeafe').font('Helvetica').fontSize(10).text('Estudiante de Ingenieria de Sistemas  |  9no semestre (CESMAG)  |  20 anos', { align: 'center' });
+doc.fillColor('#dbeafe').font('Helvetica').fontSize(10).text('Ingenieria de Sistemas  |  10mo semestre (CESMAG)  |  Estudiante de Big Data', { align: 'center' });
 doc.moveDown(0.4);
-doc.fillColor('#bfdbfe').font('Helvetica').fontSize(8.6).text('Colombia  |  Portafolio: Jose Bernal - Creative Portfolio', { align: 'center' });
+doc.fillColor('#bfdbfe').font('Helvetica').fontSize(8.6).text('Frontend  ·  Backend  ·  Analisis de datos  |  Pasto, Narino (Colombia)', { align: 'center' });
 
-// Contacto (centrado, seleccionable y clicable)
+// Contacto público (centrado, seleccionable y clicable)
 doc.moveDown(0.5);
 const contactY = doc.y;
 doc.fillColor('#ffffff').font('Helvetica').fontSize(8.8);
-const c1 = 'jabernal.4395@unicesmag.edu.co';
+const c1 = 'bernaljosehgt@gmail.com';
 const c2 = 'github.com/Bernal-XFK';
-const c3 = 'Instagram: @alejandro_bernalx';
+const c3 = 'IG: @alejandro_bernalx';
 const c4 = '323 489 3219';
 doc.text(`${c1}   |   ${c2}   |   ${c3}   |   ${c4}`, 48, contactY, { align: 'center', width: W - 96 });
-// Links clicables sobre email y GitHub (misma linea centrada)
 try {
   const line = `${c1}   |   ${c2}   |   ${c3}   |   ${c4}`;
   const fullW = doc.widthOfString(line);
@@ -86,27 +94,30 @@ try {
   doc.link(cx, cy, w2, h, 'https://github.com/Bernal-XFK');
 } catch { /* links decorativos: el texto sigue seleccionable */ }
 
-// ---------- Body (flujo lineal: 1 sola pagina) ----------
+// ---------- Body ----------
 doc.y = 184;
 doc.fillColor(INK);
 
 // Perfil
 sectionTitle(doc, 'Perfil profesional');
 doc.font('Helvetica').fontSize(9.2).fillColor(MUTED).text(
-  'Estudiante de Ingenieria de Sistemas (9no semestre, Universidad CESMAG) con interes en desarrollo de software y tecnologias de la informacion. Experiencia en proyectos academicos de programacion, consumo de APIs REST y desarrollo frontend con React y TypeScript. Me destaco por aprendizaje rapido, responsabilidad y enfoque en resolver problemas con herramientas tecnologicas.',
+  'Estudiante de Ingenieria de Sistemas (10mo semestre, Universidad CESMAG) y estudiante de Big Data, con intereses en desarrollo frontend y backend y analisis de datos. Experiencia en proyectos academicos de programacion, consumo de APIs REST y desarrollo frontend con React y TypeScript, ademas de fundamentos de Python para datos. Me destaco por aprendizaje rapido, responsabilidad y enfoque en resolver problemas con tecnologia.',
   { align: 'justify', lineGap: 2 }
 );
 
-// Formacion
+// Formación
 sectionTitle(doc, 'Formacion academica');
-doc.font('Helvetica-Bold').fontSize(9.4).fillColor(INK).text('Ingenieria de Sistemas — Universidad CESMAG');
-doc.font('Helvetica-Oblique').fontSize(8.8).fillColor(LIGHT_MUTED).text('9no semestre  |  En curso  |  Colombia');
-doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Enfasis: desarrollo de software, programacion y consumo de APIs.', { lineGap: 1 });
+eduItem(doc, 'Ingenieria de Sistemas — Universidad CESMAG', '10mo semestre  |  En curso  |  Pasto, Narino', 'Enfasis: desarrollo de software (frontend y backend) y analisis de datos.');
+eduItem(doc, 'Formacion en Big Data — Analisis de datos', 'Estudiante  |  En curso', 'Interes en analisis de datos, Python y fundamentos de Big Data.');
+eduItem(doc, 'Bachiller Academico — Colegio San Felipe Neri', '2021  |  Pasto, Narino', null);
+eduItem(doc, 'Tecnico en Integracion de Contenidos Digitales (Multimedia) — SENA', '2021', null);
+eduItem(doc, 'Cursos complementarios — SENA / Cisco', 'Formacion continua en TI', 'Cursos cortos en programacion, redes y tecnologias de la informacion.');
 
 // Skills
 sectionTitle(doc, 'Habilidades tecnicas');
-bullet(doc, 'Frontend:', 'React / Next.js, TypeScript, Tailwind CSS, Framer Motion, diseno UI/UX, Vite.');
-bullet(doc, 'Backend / Data:', 'Java, Python, Node.js + Express, consumo de APIs REST (JSON), logica de programacion.');
+bullet(doc, 'Frontend:', 'React / Next.js, TypeScript, Tailwind CSS, Vite, Framer Motion, diseno UI/UX.');
+bullet(doc, 'Backend:', 'Node.js + Express, Java, Python, APIs REST (JSON), logica de programacion.');
+bullet(doc, 'Datos:', 'Python para analisis, fundamentos de Big Data, manejo de JSON y consumo de datos.');
 bullet(doc, 'Herramientas:', 'Git y GitHub, npm, Vercel, VS Code, Postman.');
 
 // Proyectos
@@ -115,25 +126,31 @@ doc.font('Helvetica-Bold').fontSize(9.2).fillColor(NAVY).text('1. Gestion de Pos
 doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('App de escritorio en Java Swing con CRUD contra JSONPlaceholder. HTTP, JSON y estados de carga/error.', { lineGap: 1 });
 doc.moveDown(0.2);
 doc.font('Helvetica-Bold').fontSize(9.2).fillColor(NAVY).text('2. Creative Portfolio (este portafolio)');
-doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('React 19 + TypeScript + Vite + Tailwind: Hero, Proyectos via GitHub API, Skills, CV y Contacto. Covers SVG locales y fallback OpenGraph.', { lineGap: 1 });
+doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('React 19 + TypeScript + Vite + Tailwind: Hero, Proyectos via GitHub API, Skills, CV y Contacto.', { lineGap: 1 });
 doc.moveDown(0.2);
 doc.font('Helvetica-Bold').fontSize(9.2).fillColor(NAVY).text('3. WaveMood — experiencia frontend interactiva');
 doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('UI con animaciones y componentes reutilizables. Responsive, accesibilidad y detalle visual.', { lineGap: 1 });
 doc.moveDown(0.2);
 doc.font('Helvetica-Bold').fontSize(9.2).fillColor(NAVY).text('4. Repositorios en GitHub — github.com/Bernal-XFK');
-doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Codigo y practicas en Java / Python / JS. Ver perfil para el listado completo.', { link: 'https://github.com/Bernal-XFK', lineGap: 1 });
+doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Codigo y practicas en Java / Python / JS y ejercicios de datos. Ver perfil para el listado completo.', { link: 'https://github.com/Bernal-XFK', lineGap: 1 });
 
-// Blandas / idiomas / adicional (una sola columna, compacto)
+// Experiencia
+sectionTitle(doc, 'Experiencia');
+doc.font('Helvetica-Bold').fontSize(9.4).fillColor(INK).text('Asesor de ventas / Atencion al cliente — KOAJ');
+doc.font('Helvetica-Oblique').fontSize(8.8).fillColor(LIGHT_MUTED).text('4 meses  |  Pasto, Narino');
+doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Atencion al cliente, apoyo en ventas, trabajo en equipo, comunicacion y responsabilidad.', { lineGap: 1 });
+
+// Blandas / idiomas / adicional
 sectionTitle(doc, 'Habilidades blandas  |  Idiomas  |  Info adicional');
 doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Blandas: pensamiento logico, trabajo en equipo, adaptabilidad, responsabilidad.', { lineGap: 1 });
 doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Idiomas: espanol nativo | ingles B1 (lectura tecnica).', { lineGap: 1 });
-doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Adicional: disponibilidad para aprendizaje continuo e interes en desarrollo de software.', { lineGap: 1 });
+doc.font('Helvetica').fontSize(8.8).fillColor(MUTED).text('Adicional: disponibilidad para aprendizaje continuo; interes en desarrollo frontend, backend y analisis de datos.', { lineGap: 1 });
 doc.moveDown(0.4);
 
 // Footer en flujo (sin coordenadas absolutas: evita paginas extra)
 doc.strokeColor(RULE).lineWidth(0.7).moveTo(48, doc.y).lineTo(W - 48, doc.y).stroke();
 doc.moveDown(0.3);
-doc.font('Helvetica').fontSize(7.5).fillColor(LIGHT_MUTED).text(`CV — Jose Bernal | Creative Portfolio • ${YEAR}   |   github.com/Bernal-XFK`, { align: 'center', link: 'https://github.com/Bernal-XFK' });
+doc.font('Helvetica').fontSize(7.5).fillColor(LIGHT_MUTED).text(`CV publico — Jose Bernal | Pasto, Narino • ${YEAR}   |   github.com/Bernal-XFK`, { align: 'center', link: 'https://github.com/Bernal-XFK' });
 
 doc.end();
 

@@ -21,7 +21,7 @@ export default function About() {
     }),
   };
 
-  const text = "Estudiante de Ingeniería de Sistemas apasionado por la creación de soluciones digitales innovadoras. Mi enfoque se centra en el desarrollo web moderno y el análisis de datos (Big Data), buscando siempre el equilibrio perfecto entre funcionalidad, rendimiento y diseño excepcional.";
+  const text = "Estudiante de Ingeniería de Sistemas (10° semestre, CESMAG) y estudiante de Big Data, apasionado por la creación de soluciones digitales innovadoras. Mi enfoque se centra en el desarrollo frontend y backend y el análisis de datos, buscando siempre el equilibrio perfecto entre funcionalidad, rendimiento y diseño excepcional.";
 
   return (
     <section id="sobre-mi" className="py-32 relative overflow-hidden" ref={ref}>
@@ -91,10 +91,10 @@ export default function About() {
 
             <Stagger className="grid grid-cols-2 gap-6" delay={0.2}>
               {[
-                { label: 'Enfoque', value: 'Frontend & Data' },
-                { label: 'Ubicación', value: 'Colombia' },
-                { label: 'Educación', value: 'Ing. de Sistemas' },
-                { label: 'Intereses', value: 'Creative Coding' },
+                { label: 'Enfoque', value: 'Front · Back · Data' },
+                { label: 'Ubicación', value: 'Pasto, Colombia' },
+                { label: 'Educación', value: '10° sem · Big Data' },
+                { label: 'Intereses', value: 'Análisis de datos' },
               ].map((item) => (
                 <StaggerItem key={item.label}>
                   <motion.div

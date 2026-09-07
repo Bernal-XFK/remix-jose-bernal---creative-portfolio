@@ -151,10 +151,10 @@ export default function CV() {
                 {/* Header */}
                 <div className="bg-[#1e3a5f] text-white p-4 -m-4 md:-m-6 mb-4 md:mb-6 text-center">
                   <h3 className="text-lg md:text-xl font-bold mb-1">José Alejandro Bernal Figueroa</h3>
-                  <p className="text-[10px] md:text-xs opacity-90 mb-2">Estudiante de Ingeniería de Sistemas | 20 años</p>
+                  <p className="text-[10px] md:text-xs opacity-90 mb-2">Ing. de Sistemas · 10° semestre (CESMAG) | Estudiante de Big Data</p>
                   <div className="flex flex-wrap justify-center gap-2 md:gap-3 text-[8px] md:text-[10px] opacity-80">
                     <span>📞 323 489 3219</span>
-                    <span>✉️ jabernal.4395@unicesmag.edu.co</span>
+                    <span>✉️ bernaljosehgt@gmail.com</span>
                     <span>🌐 github.com/Bernal-XFK</span>
                   </div>
                 </div>
@@ -164,15 +164,16 @@ export default function CV() {
                   <section>
                     <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Perfil Profesional</h4>
                     <p className="text-gray-700 leading-relaxed text-[9px] md:text-[11px]">
-                      Estudiante de Ingeniería de Sistemas con interés en el desarrollo de software y tecnologías de la información. Cuento con experiencia en proyectos académicos relacionados con programación y consumo de APIs. Me destaco por mi capacidad de aprendizaje, responsabilidad y enfoque en la solución de problemas mediante herramientas tecnológicas.
+                      Estudiante de Ingeniería de Sistemas (10° semestre, CESMAG) y estudiante de Big Data, con intereses en desarrollo frontend y backend y análisis de datos. Experiencia en proyectos académicos de programación, consumo de APIs REST y React + TypeScript, además de fundamentos de Python para datos.
                     </p>
                   </section>
 
                   <section>
                     <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Formación Académica</h4>
-                    <div className="text-[9px] md:text-[11px]">
+                    <div className="text-[9px] md:text-[11px] space-y-1">
                       <p className="font-bold text-gray-800">Ingeniería de Sistemas — Universidad CESMAG</p>
-                      <p className="text-gray-600 italic">9no semestre | En curso</p>
+                      <p className="text-gray-600 italic">10° semestre | En curso | Pasto, Nariño</p>
+                      <p className="text-gray-700">Big Data (estudiante) · Bachiller San Felipe Neri (2021) · Técnico SENA Multimedia (2021) · Cursos SENA / Cisco</p>
                     </div>
                   </section>
 
@@ -180,12 +181,12 @@ export default function CV() {
                     <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Habilidades Técnicas</h4>
                     <div className="grid grid-cols-2 gap-2 text-gray-700 bg-gray-50 p-2 border border-gray-200 text-[9px] md:text-[11px]">
                       <ul className="list-disc list-inside">
-                        <li>Java, Python, TypeScript</li>
-                        <li>Desarrollo de apps de escritorio</li>
+                        <li>Frontend: React, TS, Tailwind</li>
+                        <li>Backend: Node, Java, Python</li>
                       </ul>
                       <ul className="list-disc list-inside">
-                        <li>Consumo de APIs REST</li>
-                        <li>Manejo de Git y GitHub</li>
+                        <li>Datos: Python, Big Data, JSON</li>
+                        <li>Git, GitHub, Vercel, Postman</li>
                       </ul>
                     </div>
                   </section>
@@ -194,12 +195,22 @@ export default function CV() {
                     <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Proyectos Destacados</h4>
                     <div className="mb-2 text-[9px] md:text-[11px]">
                       <p className="font-bold text-[#1e3a5f]">Gestión de posts con API (JSONPlaceholder)</p>
-                      <p className="text-gray-700">Desarrollo de aplicación en Java Swing para consumo y gestión de datos desde una API REST. Implementa operaciones CRUD conectadas al endpoint público JSONPlaceholder.</p>
+                      <p className="text-gray-700">App Java Swing con CRUD contra API REST. HTTP, JSON y estados de carga/error.</p>
+                    </div>
+                    <div className="mb-2 text-[9px] md:text-[11px]">
+                      <p className="font-bold text-[#1e3a5f]">Creative Portfolio + WaveMood</p>
+                      <p className="text-gray-700">React 19 + TS + Tailwind. UI interactiva, responsive y accesible.</p>
                     </div>
                     <div className="text-[9px] md:text-[11px]">
-                      <p className="font-bold text-[#1e3a5f]">Repositorios en GitHub</p>
-                      <p className="text-gray-700">github.com/Bernal-XFK</p>
+                      <p className="font-bold text-[#1e3a5f]">GitHub — github.com/Bernal-XFK</p>
+                      <p className="text-gray-700">Prácticas en Java / Python / JS y datos.</p>
                     </div>
+                  </section>
+
+                  <section>
+                    <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Experiencia</h4>
+                    <p className="font-bold text-gray-800 text-[9px] md:text-[11px]">KOAJ — Atención al cliente (4 meses)</p>
+                    <p className="text-gray-700 text-[9px] md:text-[11px]">Ventas, trabajo en equipo y responsabilidad. Pasto, Nariño.</p>
                   </section>
 
                   <section>
@@ -222,8 +233,8 @@ export default function CV() {
                     <section>
                       <h4 className="text-[#1e3a5f] font-bold border-b border-[#1e3a5f] pb-1 mb-2 uppercase text-[10px] md:text-xs">Info Adicional</h4>
                       <ul className="list-disc list-inside text-gray-700 text-[9px] md:text-[11px]">
-                        <li>Disponibilidad para aprendizaje continuo</li>
-                        <li>Interés en desarrollo de software</li>
+                        <li>Aprendizaje continuo</li>
+                        <li>Front · Back · Data analysis</li>
                       </ul>
                     </section>
                   </div>

@@ -2,7 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react';
 import { SplitChars } from './motion-shared';
 
-const ROLES = ['Ingeniero en formación', 'Big Data', 'Developer'];
+const ROLES = ['10° Ing. de Sistemas', 'Frontend · Backend', 'Big Data & Data Analysis'];
 
 export default function Hero() {
   const ref = useRef(null);

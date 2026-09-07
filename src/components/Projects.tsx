@@ -1,11 +1,23 @@
-import { motion, useReducedMotion, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
-import React, { useRef, useState, useEffect } from 'react';
-import { SplitChars, Reveal } from './motion-shared';
+import { useEffect, useRef, useState } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import type { Project } from '../../api/github-shared';
+import { Reveal, SplitChars } from './motion-shared';
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === 'string' && error.length > 0) return error;
+  return 'Error desconocido al cargar proyectos.';
+}
+
+interface GitHubErrorPayload {
+  error?: string;
+}
 
 export default function Projects() {
   const containerRef = useRef(null);
   const reduce = useReducedMotion() === true;
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,14 +36,14 @@ export default function Projects() {
       try {
         const res = await fetch('/api/projects');
         if (!res.ok) {
-          const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
+          const errorPayload = await res.json().catch(() => null) as GitHubErrorPayload | null;
+          throw new Error(errorPayload?.error || `HTTP error! status: ${res.status}`);
         }
-        const data = await res.json();
+        const data = await res.json() as Project[];
         setProjects(data);
-      } catch (error: any) {
-        console.error("Error fetching projects:", error);
-        setError(error.message || "Error desconocido al cargar proyectos.");
+      } catch (fetchError: unknown) {
+        console.error("Error fetching projects:", fetchError);
+        setError(getErrorMessage(fetchError));
       } finally {
         setLoading(false);
       }
@@ -108,7 +120,7 @@ export default function Projects() {
   );
 }
 
-function ProjectCard({ project, index }: { project: any, index: number, key?: React.Key }) {
+function ProjectCard({ project, index }: { project: Project, index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion() === true;
   const [isHovered, setIsHovered] = useState(false);
@@ -133,13 +145,13 @@ function ProjectCard({ project, index }: { project: any, index: number, key?: Re
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7.5deg", "-7.5deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7.5deg", "7.5deg"]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!cardRef.current || reduce) return;
     const rect = cardRef.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
     const xPct = mouseX / width - 0.5;
     const yPct = mouseY / height - 0.5;
     x.set(xPct);
@@ -235,16 +247,16 @@ function ProjectCard({ project, index }: { project: any, index: number, key?: Re
           viewport={{ once: true, margin: '-60px' }}
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
         >
-          {project.tech.map((t: string) => (
+          {project.tech.map((technology: string) => (
             <motion.span
-              key={t}
+              key={technology}
               variants={reduce ? undefined : {
                 hidden: { opacity: 0, y: 24 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
               }}
               className="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-white/70 bg-white/5 backdrop-blur-sm"
             >
-              {t}
+              {technology}
             </motion.span>
           ))}
         </motion.div>
