@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   GITHUB_USERNAME,
+  buildFallbackProjects,
   buildGitHubHeaders,
-  getErrorMessage,
   isVisibleRepo,
   mapRepoToProject,
   type GitHubRepo,
@@ -17,6 +17,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
   // CORS Headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Expose-Headers", "X-Data-Source");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -33,7 +35,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     );
 
     if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      const remaining = response.headers.get("x-ratelimit-remaining");
+      const reset = response.headers.get("x-ratelimit-reset");
+      const resetIn = reset ? Math.max(0, Number(reset) * 1000 - Date.now()) : null;
+      console.error(
+        `GitHub API error: ${response.status} ${response.statusText} ` +
+          `(remaining=${remaining ?? "?"}, hasToken=${Boolean(GITHUB_TOKEN)})`,
+      );
+      // Rate limit / auth / upstream caído → fallback local con 200 para que
+      // Vercel nunca deje la sección vacía. Cache corto para reintentar pronto.
+      const fallback = buildFallbackProjects();
+      res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate");
+      res.setHeader("X-Data-Source", "fallback");
+      if (resetIn !== null && Number.isFinite(resetIn)) {
+        res.setHeader("Retry-After", String(Math.ceil(resetIn / 1000)));
+      }
+      return res.status(200).json(fallback);
     }
 
     const githubRepos = (await response.json()) as GitHubRepo[];
@@ -41,13 +58,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
 
     // Cache por 1 hora (evita quemar la API de GitHub en Vercel)
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
+    res.setHeader("X-Data-Source", "github");
     return res.status(200).json(projects);
   } catch (error: unknown) {
     console.error("GitHub Fetch Error:", error);
 
-    return res.status(500).json({
-      error: "Error al conectar con GitHub.",
-      details: getErrorMessage(error),
-    });
+    // Caída de red/DNS en serverless → mismo fallback local (200).
+    const fallback = buildFallbackProjects();
+    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate");
+    res.setHeader("X-Data-Source", "fallback");
+    return res.status(200).json(fallback);
   }
 }

@@ -12,6 +12,7 @@ function getErrorMessage(error: unknown): string {
 
 interface GitHubErrorPayload {
   error?: string;
+  details?: string;
 }
 
 export default function Projects() {
@@ -20,6 +21,7 @@ export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFallback, setIsFallback] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -29,26 +31,32 @@ export default function Projects() {
   const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const scaleHeader = useTransform(scrollYProgress, [0, 1], [0.96, 1.02]);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch('/api/projects');
-        if (!res.ok) {
-          const errorPayload = await res.json().catch(() => null) as GitHubErrorPayload | null;
-          throw new Error(errorPayload?.error || `HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json() as Project[];
-        setProjects(data);
-      } catch (fetchError: unknown) {
-        console.error("Error fetching projects:", fetchError);
-        setError(getErrorMessage(fetchError));
-      } finally {
-        setLoading(false);
+  const fetchProjects = async () => {
+    setLoading(true);
+    setError(null);
+    setIsFallback(false);
+    try {
+      const res = await fetch('/api/projects');
+      if (!res.ok) {
+        const errorPayload = await res.json().catch(() => null) as GitHubErrorPayload | null;
+        const detail = errorPayload?.details ? `: ${errorPayload.details}` : '';
+        throw new Error(`${errorPayload?.error || `HTTP error! status: ${res.status}`}${detail}`);
       }
-    };
+      // X-Data-Source: "fallback" → covers locales (GitHub con rate limit).
+      if (res.headers.get('X-Data-Source') === 'fallback') setIsFallback(true);
+      const data = await res.json() as Project[];
+      setProjects(data);
+    } catch (fetchError: unknown) {
+      console.error("Error fetching projects:", fetchError);
+      setError(getErrorMessage(fetchError));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -96,7 +104,7 @@ export default function Projects() {
               Sugerencia: Verifica que la variable de entorno GITHUB_TOKEN esté configurada en Vercel si estás siendo bloqueado por Rate Limit.
             </div>
             <button
-              onClick={() => window.location.reload()}
+              onClick={fetchProjects}
               className="px-6 py-2 bg-primary text-black font-bold rounded-full hover:scale-105 transition-transform"
             >
               Reintentar
@@ -104,6 +112,11 @@ export default function Projects() {
           </div>
         ) : (
           <div className="space-y-32">
+            {isFallback && (
+              <p className="text-center font-mono text-[11px] uppercase tracking-widest text-amber-400/80 border border-amber-400/20 rounded-full px-6 py-2 max-w-xl mx-auto">
+                Vista local temporal: GitHub con rate limit — configura GITHUB_TOKEN en Vercel
+              </p>
+            )}
             {projects.length > 0 ? (
               projects.map((project, index) => (
                 <Reveal key={project.id} delay={Math.min(index * 0.05, 0.2)}>

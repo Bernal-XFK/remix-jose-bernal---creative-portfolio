@@ -5,6 +5,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import {
   GITHUB_USERNAME,
+  buildFallbackProjects,
   buildGitHubHeaders,
   getErrorMessage,
   isVisibleRepo,
@@ -173,13 +174,20 @@ async function startServer(): Promise<express.Express> {
         { headers: buildGitHubHeaders(process.env.GITHUB_TOKEN) },
       );
 
-      if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+      if (!response.ok) {
+        console.error(`GitHub API error (local): ${response.status}`);
+        res.setHeader("X-Data-Source", "fallback");
+        return res.json(buildFallbackProjects());
+      }
       const githubRepos = (await response.json()) as GitHubRepo[];
       const projects: Project[] = githubRepos.filter(isVisibleRepo).map(mapRepoToProject);
 
+      res.setHeader("X-Data-Source", "github");
       res.json(projects);
     } catch (fetchError: unknown) {
-      res.status(500).json({ error: "Error al conectar con GitHub localmente.", details: getErrorMessage(fetchError) });
+      console.error("GitHub Fetch Error (local):", getErrorMessage(fetchError));
+      res.setHeader("X-Data-Source", "fallback");
+      res.json(buildFallbackProjects());
     }
   });
 

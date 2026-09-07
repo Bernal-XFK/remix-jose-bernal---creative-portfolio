@@ -136,6 +136,25 @@ export function mapRepoToProject(repo: GitHubRepo): Project {
   };
 }
 
+/** Proyectos locales de respaldo (covers en public/covers/*).
+ * Se usan cuando GitHub responde 403/429 (rate limit sin token en Vercel)
+ * para que la sección nunca quede vacía. Fuente: CUSTOM_IMAGES. */
+export function buildFallbackProjects(): Project[] {
+  return Object.keys(CUSTOM_IMAGES)
+    .sort((a, b) => a.localeCompare(b))
+    .map((repoName, index) => ({
+      id: `fallback-${index}-${repoName}`,
+      title: formatTitle(repoName),
+      description: generateFallbackDescription(repoName, null, undefined),
+      image: CUSTOM_IMAGES[repoName],
+      fallbackImage: `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${repoName}`,
+      fallbackColor: getLanguageColor(null),
+      demo: "#",
+      github: `https://github.com/${GITHUB_USERNAME}/${repoName}`,
+      tech: [],
+      stars: 0,
+    }));
+}
 /** Extrae un mensaje legible de un error desconocido (catch sin `any`). */
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) return error.message;
