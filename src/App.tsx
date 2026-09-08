@@ -8,6 +8,7 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import CV from './components/CV';
+import PokemonSlots from './components/PokemonSlots';
 import Contact from './components/Contact';
 import Socials from './components/Socials';
 
@@ -43,6 +44,7 @@ export default function App() {
           <Projects />
           <Skills />
           <CV />
+          <PokemonSlots />
           <Contact />
           
           <footer className="py-8 border-t border-white/5 font-mono text-xs text-white/30 uppercase tracking-widest">

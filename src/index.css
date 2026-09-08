@@ -249,3 +249,35 @@
     animation-timing-function: ease-in-out !important;
   }
 }
+
+/* Poke-Slots minis laterales (galaga/mario/pacman/tetris): attract modes
+   decorativos aria-hidden con CSS puro (sin framer-motion). El kill global
+   `* { duration:0.01ms; count:1 }` los congelaba y el gateo JS `reduce`
+   les quitaba las clases. Resurrección lenta tras el kill (mismo patrón
+   que galaxia): longhands + !important, especificidad (.arc-* > *) + orden.
+   Solo transform/opacity. Los shakes/flashes vestibulares NO se resucitan. */
+@media (prefers-reduced-motion: reduce) {
+  .arc-chase { animation-name: arc-chase !important; animation-duration: 2.4s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-crt { animation-name: arc-crt !important; animation-duration: 9s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-bg-spin { animation-name: arc-bg-spin !important; animation-duration: 120s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-coin-spin { animation-name: arc-coin-spin !important; animation-duration: 1.8s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-coin-pulse { animation-name: arc-coin-pulse !important; animation-duration: 2.8s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-galaga-ship { animation-name: arc-galaga-ship !important; animation-duration: 5.2s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-direction: alternate !important; }
+  .arc-galaga-inv { animation-name: arc-galaga-inv !important; animation-duration: 6.4s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-direction: alternate !important; }
+  .arc-bullet { animation-name: arc-bullet !important; animation-duration: 2.2s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-boom { animation-name: arc-boom !important; animation-duration: 2.6s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-star { animation-name: arc-star !important; animation-duration: 6s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-mario-run { animation-name: arc-mario-run !important; animation-duration: 6.8s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; animation-direction: alternate !important; }
+  .arc-mario-jump { animation-name: arc-mario-jump !important; animation-duration: 3s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-frame-a { animation-name: arc-frame-a !important; animation-duration: 1s !important; animation-timing-function: steps(1, jump-none) !important; animation-iteration-count: infinite !important; }
+  .arc-frame-b { animation-name: arc-frame-b !important; animation-duration: 1s !important; animation-timing-function: steps(1, jump-none) !important; animation-iteration-count: infinite !important; }
+  .arc-goomba { animation-name: arc-goomba !important; animation-duration: 8s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; animation-direction: alternate !important; }
+  .arc-pac-run { animation-name: arc-pac-run !important; animation-duration: 6.4s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-ghost-a { animation-name: arc-ghost-a !important; animation-duration: 6.4s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-ghost-b { animation-name: arc-ghost-b !important; animation-duration: 7.6s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-pellet { animation-name: arc-pellet !important; animation-duration: 2.2s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-power { animation-name: arc-power !important; animation-duration: 1.8s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+  .arc-tetris-fall { animation-name: arc-tetris-fall !important; animation-duration: 5.6s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-tetris-fall-b { animation-name: arc-tetris-fall-b !important; animation-duration: 6.2s !important; animation-timing-function: linear !important; animation-iteration-count: infinite !important; }
+  .arc-tetris-clear { animation-name: arc-tetris-clear !important; animation-duration: 1.6s !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; }
+}
